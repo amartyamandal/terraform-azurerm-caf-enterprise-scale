@@ -11,9 +11,10 @@ terraform {
     organization = "vindpro"
 
     workspaces {
-      name = "az_poc"
+      name = "dev"
     }
   }
+
 }
 
 provider "azurerm" {

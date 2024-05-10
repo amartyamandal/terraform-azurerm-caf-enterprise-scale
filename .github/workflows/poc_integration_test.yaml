@@ -17,7 +17,7 @@
   ###############
   jobs:
     build:
-      environment: PoC
+      environment: dev
       name: build-and-deploy-to-dev
       runs-on: ubuntu-latest
   
