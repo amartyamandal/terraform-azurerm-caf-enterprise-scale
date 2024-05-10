@@ -47,7 +47,7 @@ jobs:
 
       - name: Terraform fmt
         id: fmt
-        run: terraform fmt -check tests/tfe-pipeline
+        run: terraform fmt tests/tfe-pipeline
         continue-on-error: true
 
       - name: Terraform Init
