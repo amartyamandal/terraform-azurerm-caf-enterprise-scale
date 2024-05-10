@@ -12,7 +12,7 @@
       paths:
         - tests/tfe-pipeline**
   env:
-    TF_TOKEN_APP_TERRAFORM_IO: ${{ vars.TF_TOKEN_APP_TERRAFORM_IO }}
+    TF_TOKEN_APP_TERRAFORM_IO: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
   
   ###############
   # Set the Job #
