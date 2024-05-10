@@ -11,7 +11,7 @@ terraform {
     organization = "vindpro"
 
     workspaces {
-      name = "PoC"
+      name = "az_poc"
     }
   }
 }
