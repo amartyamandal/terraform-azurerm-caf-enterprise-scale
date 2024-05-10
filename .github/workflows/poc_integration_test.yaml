@@ -52,7 +52,9 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init tests/tfe-pipeline
+        run: |
+          terraform fmt tests/tfe-pipeline
+          terraform init tests/tfe-pipeline
 
       - name: Terraform Plan
         id: plan
