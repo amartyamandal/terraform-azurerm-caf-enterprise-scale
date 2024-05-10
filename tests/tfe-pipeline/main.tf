@@ -10,7 +10,7 @@ terraform {
         organization = "vindpro"
 
         workspaces {
-        name = "PoC"
+            name = "PoC"
         }
     }
 }
