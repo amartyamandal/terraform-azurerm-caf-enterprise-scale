@@ -12,7 +12,7 @@
       paths:
         - tests/tfe-pipeline**
   env:
-    TF_TOKEN_APP_TERRAFORM_IO: B6JR2QM7ffxEHw.atlasv1.r1HzI30zMaO6GzDzlodCz2cNLSFk68J4RC52TrP2n2PNNOMxBvZmqAYRNznDAXFYIPI
+    TF_TOKEN_APP_TERRAFORM_IO: LBnO37ylwEkDBQ.atlasv1.3jrztqR90fTtepiMVf6ZfIR6r4wwW0Phy1QEsEJ8vN8zngAiSQ8Wt7MtjR4yi9fv4Cs
   
   ###############
   # Set the Job #
