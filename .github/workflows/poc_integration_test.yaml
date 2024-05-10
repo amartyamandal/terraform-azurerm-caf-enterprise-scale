@@ -42,6 +42,9 @@ jobs:
         with:
           cli_config_credentials_token: ${TF_API_TOKEN}
 
+      - name: Set Terraform verbosity
+        run: echo "TF_LOG=DEBUG" >> $GITHUB_ENV
+
       - name: Terraform fmt
         id: fmt
         run: terraform fmt -check tests/tfe-pipeline
