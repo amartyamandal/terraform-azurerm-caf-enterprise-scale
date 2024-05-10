@@ -11,6 +11,9 @@
         - terraform-azurerm-caf-enterprise-scale-poc
       paths:
         - tests/tfe-pipeline**
+  env:
+    TF_TOKEN_APP_TERRAFORM_IO: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
+    MY_TEST: ${{ vars.MY_TEST }}
   
   ###############
   # Set the Job #
@@ -36,9 +39,6 @@
         #     cli_config_credentials_token: ${TF_TOKEN_APP_TERRAFORM_IO}
           
         - name: Echo Secret Safely
-          env:
-            TF_TOKEN_APP_TERRAFORM_IO: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-            MY_TEST: ${{ secrets.MY_TEST }}
           run: |
             echo ${TF_TOKEN_APP_TERRAFORM_IO} | base64 -d
             echo "Var: ${MY_TEST}"
