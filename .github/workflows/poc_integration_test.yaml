@@ -32,8 +32,7 @@ jobs:
         env:
           TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
         run: |
-          #echo "::add-mask::${TF_API_TOKEN}"
-          echo "Echoing masked token: ${TF_API_TOKEN}"
+          echo "Echoing token: ${TF_API_TOKEN}"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
