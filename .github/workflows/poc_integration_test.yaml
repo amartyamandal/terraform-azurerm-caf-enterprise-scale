@@ -40,7 +40,6 @@
           
         - name: Echo Secret Safely
           run: |
-            echo ${TF_TOKEN_APP_TERRAFORM_IO} | base64 -d
             echo "Var: ${MY_TEST}"
   
         # - name: Set Terraform verbosity
