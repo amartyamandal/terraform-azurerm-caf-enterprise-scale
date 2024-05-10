@@ -1,63 +1,56 @@
+---
+name: PoC Pipeline Integration Test
+
+##########################################
+# Start the job on push for all branches #
+##########################################
+
+# yamllint disable-line rule:truthy
 on:
     push:
-      branches: 
-        - terraform-azurerm-caf-enterprise-scale-poc
-      paths:
-        - tests/tfe-pipeline**
-    
-  #env:
-  ########## If storing tfstate to azure storage ##########
-  #  ARM_CLIENT_ID: ${{ secrets.SP_CLIENT_ID }}
-  #  ARM_CLIENT_SECRET: ${{ secrets.SP_CLIENT_SECRET }}
-  #  ARM_SUBSCRIPTION_ID: ${{ secrets.SP_SUBSCRIPTION_ID }}
-  #  ARM_TENANT_ID: ${{ secrets.SP_TENANT_ID }}
-  jobs:
-    build-and-deploy-to-dev:
-      - name: "Terraforms"
-        runs-on: ubuntu-latest
-        steps:
-        # Authentication
-        # Set up the following secrets in your repository: AZURE_CREDENTIALS
-        #- name: Azure Login
-        #  uses: azure/login@v1
-        #  with:
-        #    creds: ${{ secrets.AZURE_CREDENTIALS }}
-        
-      # Checkout
-      - name: Checkout
-        uses: actions/checkout@v1
-      
-      # - name: Run Checkov Action to chec mis configuration
-      #   id: checkov
-      #   uses: bridgecrewio/checkov-action@master
-      #   with:
-      #     directory: iac/tf/
-      #     framework: terraform
-  
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+        branches: 
+          - terraform-azurerm-caf-enterprise-scale-poc
+        paths:
+          - tests/tfe-pipeline**
+
+env:
+  TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+
+###############
+# Set the Job #
+###############
+jobs:
+  build:
+    name: build-and-deploy-to-dev
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          terraform_version: 0.13.3
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-  
-      #- name: Terraform Formats 
-      #  id: fmt
-      #  run: terraform fmt -check iac/tf
-  
+          fetch-depth: 0
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: TF_API_TOKEN
+
       - name: Terraform Init
         id: init
-        run: terraform init iac/tf
-  
-      - name: Terraform Plan iac/tf
+        run: terraform init tests/tfe-pipeline
+
+      - name: Terraform Plan
         id: plan
         if: github.event_name == 'push'
-        run: terraform plan -no-color iac/tf
+        run: terraform plan -no-color tests/tfe-pipeline
         continue-on-error: true
-  
-      
+
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
-       r un: exit 1
-  
+        run: exit 1
+
       - name: Terraform Apply
-        run: terraform apply -auto-approve iac/tf
+        run: terraform apply -auto-approve tests/tfe-pipeline
+
+
+		
