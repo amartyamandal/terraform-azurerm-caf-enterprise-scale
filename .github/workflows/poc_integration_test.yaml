@@ -54,7 +54,8 @@ jobs:
         id: init
         run: |
           terraform fmt -recursive tests/tfe-pipeline
-          terraform init -chdir=tests/tfe-pipeline
+          terraform init tests/tfe-pipeline
+        working-directory: tests/tfe-pipeline
 
       - name: Terraform Plan
         id: plan
