@@ -27,15 +27,20 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Mask and echo the Terraform API token
+        run: |
+          echo "::add-mask::${{ secrets.TF_API_TOKEN }}"
+          echo "Echoing masked token: ${{ secrets.TF_API_TOKEN }}"
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          cli_config_credentials_token: ${{ env.TF_API_TOKEN }}
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-      - name: Terraform fmt
-        id: fmt
-        run: terraform fmt -check tests/tfe-pipeline
-        continue-on-error: true
+      # - name: Terraform fmt
+      #   id: fmt
+      #   run: terraform fmt -check tests/tfe-pipeline
+      #   continue-on-error: true
 
       # - name: Terraform Init
       #   id: init
