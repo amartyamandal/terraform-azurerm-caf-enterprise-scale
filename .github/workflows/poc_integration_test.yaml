@@ -12,7 +12,8 @@
       paths:
         - tests/tfe-pipeline**
   env:
-    TF_TOKEN_APP_TERRAFORM_IO: tests
+    TF_TOKEN_APP_TERRAFORM_IO: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
+    MY_TEST: ${{ vars.MY_TEST }}
   
   ###############
   # Set the Job #
@@ -39,7 +40,7 @@
           
         - name: Echo Secret Safely
           run: |
-            echo "Token: ${TF_TOKEN_APP_TERRAFORM_IO}"
+            echo "Var: ${MY_TEST}"
   
         # - name: Set Terraform verbosity
         #   run: echo "TF_LOG=DEBUG" >> $GITHUB_ENV
