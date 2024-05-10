@@ -14,15 +14,15 @@ on:
   #  ARM_TENANT_ID: ${{ secrets.SP_TENANT_ID }}
   jobs:
     build-and-deploy-to-dev:
-      name: "Terraforms"
-      runs-on: ubuntu-latest
-      steps:
-      # Authentication
-      # Set up the following secrets in your repository: AZURE_CREDENTIALS
-      #- name: Azure Login
-      #  uses: azure/login@v1
-      #  with:
-      #    creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: "Terraforms"
+        runs-on: ubuntu-latest
+        steps:
+        # Authentication
+        # Set up the following secrets in your repository: AZURE_CREDENTIALS
+        #- name: Azure Login
+        #  uses: azure/login@v1
+        #  with:
+        #    creds: ${{ secrets.AZURE_CREDENTIALS }}
         
       # Checkout
       - name: Checkout
