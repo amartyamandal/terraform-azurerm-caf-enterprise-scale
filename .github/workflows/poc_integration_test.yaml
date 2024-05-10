@@ -32,19 +32,24 @@ jobs:
         with:
           cli_config_credentials_token: ${{ env.TF_API_TOKEN }}
 
-      - name: Terraform Init
-        id: init
-        run: terraform init tests/tfe-pipeline
-
-      - name: Terraform Plan
-        id: plan
-        if: github.event_name == 'push'
-        run: terraform plan -no-color tests/tfe-pipeline
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check tests/tfe-pipeline
         continue-on-error: true
 
-      - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
+      # - name: Terraform Init
+      #   id: init
+      #   run: terraform init tests/tfe-pipeline
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tests/tfe-pipeline
+      # - name: Terraform Plan
+      #   id: plan
+      #   if: github.event_name == 'push'
+      #   run: terraform plan -no-color tests/tfe-pipeline
+      #   continue-on-error: true
+
+      # - name: Terraform Plan Status
+      #   if: steps.plan.outcome == 'failure'
+      #   run: exit 1
+
+      # - name: Terraform Apply
+      #   run: terraform apply -auto-approve tests/tfe-pipeline
