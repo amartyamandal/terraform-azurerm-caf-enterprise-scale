@@ -13,9 +13,6 @@ on:
         paths:
           - tests/tfe-pipeline**
 
-env:
-  TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-
 ###############
 # Set the Job #
 ###############
@@ -33,7 +30,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          cli_config_credentials_token: TF_API_TOKEN
+          cli_config_credentials_token: ${{ env.TF_API_TOKEN }}
 
       - name: Terraform Init
         id: init
@@ -51,5 +48,3 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tests/tfe-pipeline
-
-		
