@@ -11,7 +11,7 @@ terraform {
     organization = "vindpro"
 
     workspaces {
-      name = "dev"
+      name = "dev_test"
     }
   }
 
