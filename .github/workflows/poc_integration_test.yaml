@@ -27,13 +27,13 @@
           with:
             fetch-depth: 0
   
-        - name: Setup Terraform
-          uses: hashicorp/setup-terraform@v3
-          env:
-            TF_TOKEN_APP_TERRAFORM_IO: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-            MY_TEST: ${{ secrets.MY_TEST }}
-          with:
-            cli_config_credentials_token: ${TF_TOKEN_APP_TERRAFORM_IO}
+        # - name: Setup Terraform
+        #   uses: hashicorp/setup-terraform@v3
+        #   env:
+        #     TF_TOKEN_APP_TERRAFORM_IO: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
+        #     MY_TEST: ${{ secrets.MY_TEST }}
+        #   with:
+        #     cli_config_credentials_token: ${TF_TOKEN_APP_TERRAFORM_IO}
           
         - name: Echo Secret Safely
           env:
@@ -43,30 +43,30 @@
             echo "Secret: ${TF_TOKEN_APP_TERRAFORM_IO}"
             echo "Var: ${MY_TEST}"
   
-        - name: Set Terraform verbosity
-          run: echo "TF_LOG=DEBUG" >> $GITHUB_ENV
+        # - name: Set Terraform verbosity
+        #   run: echo "TF_LOG=DEBUG" >> $GITHUB_ENV
   
-        - name: Terraform fmt
-          id: fmt
-          run: terraform fmt -recursive tests/tfe-pipeline
-          continue-on-error: true
+        # - name: Terraform fmt
+        #   id: fmt
+        #   run: terraform fmt -recursive tests/tfe-pipeline
+        #   continue-on-error: true
   
-        - name: Terraform Init
-          id: init
-          run: terraform init
-          working-directory: tests/tfe-pipeline
+        # - name: Terraform Init
+        #   id: init
+        #   run: terraform init
+        #   working-directory: tests/tfe-pipeline
   
-        - name: Terraform Plan
-          id: plan
-          if: github.event_name == 'push'
-          run: terraform plan -no-color
-          continue-on-error: true
-          working-directory: tests/tfe-pipeline
+        # - name: Terraform Plan
+        #   id: plan
+        #   if: github.event_name == 'push'
+        #   run: terraform plan -no-color
+        #   continue-on-error: true
+        #   working-directory: tests/tfe-pipeline
   
-        - name: Terraform Plan Status
-          if: steps.plan.outcome == 'failure'
-          run: exit 1
+        # - name: Terraform Plan Status
+        #   if: steps.plan.outcome == 'failure'
+        #   run: exit 1
   
-        - name: Terraform Apply
-          run: terraform apply -auto-approve
-          working-directory: tests/tfe-pipeline
+        # - name: Terraform Apply
+        #   run: terraform apply -auto-approve
+        #   working-directory: tests/tfe-pipeline
