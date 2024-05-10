@@ -18,6 +18,7 @@ on:
 ###############
 jobs:
   build:
+    environment: PoC
     name: build-and-deploy-to-dev
     runs-on: ubuntu-latest
 
@@ -28,14 +29,16 @@ jobs:
           fetch-depth: 0
 
       - name: Mask and echo the Terraform API token
+        env:
+          TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
         run: |
-          echo "::add-mask::${{ secrets.TF_API_TOKEN }}"
-          echo "Echoing masked token: ${{ secrets.TF_API_TOKEN }}"
+          echo "::add-mask::${TF_API_TOKEN}"
+          echo "Echoing masked token: ${TF_API_TOKEN}"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          cli_config_credentials_token: ${TF_API_TOKEN}
 
       # - name: Terraform fmt
       #   id: fmt
