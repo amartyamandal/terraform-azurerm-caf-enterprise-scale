@@ -20,4 +20,4 @@ provider "azurerm" {
   features {}
 }
 
-# commented out for now
+#comments

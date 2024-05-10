@@ -1,71 +1,70 @@
 ---
-name: PoC Pipeline Integration Test
-
-##########################################
-# Start the job on push for all branches #
-##########################################
-
-# yamllint disable-line rule:truthy
-on:
+  name: PoC Pipeline Integration Test
+  
+  ##########################################
+  # Start the job on push for all branches #
+  ##########################################
+  # yamllint disable-line rule:truthy
+  on:
     push:
-        branches: 
-          - terraform-azurerm-caf-enterprise-scale-poc
-        paths:
-          - tests/tfe-pipeline**
-
-###############
-# Set the Job #
-###############
-jobs:
-  build:
-    environment: PoC
-    name: build-and-deploy-to-dev
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Echo the var
-        env:
-          TF_API_TOKEN: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-          TEST_VAR: ${{ vars.TEST_VAR }}
-        run: |
-          echo "Echoing var: ${TEST_VAR}"
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        env:
-          TF_API_TOKEN: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-        with:
-          cli_config_credentials_token: ${TF_API_TOKEN}
-
-      - name: Set Terraform verbosity
-        run: echo "TF_LOG=DEBUG" >> $GITHUB_ENV
-
-      - name: Terraform fmt
-        id: fmt
-        run: terraform fmt tests/tfe-pipeline
-        continue-on-error: true
-
-      - name: Terraform Init
-        id: init
-        run: |
-          terraform fmt -recursive tests/tfe-pipeline
-          terraform init tests/tfe-pipeline
-        working-directory: tests/tfe-pipeline
-
-      - name: Terraform Plan
-        id: plan
-        if: github.event_name == 'push'
-        run: terraform plan -no-color tests/tfe-pipeline
-        continue-on-error: true
-
-      - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tests/tfe-pipeline
+      branches:
+        - terraform-azurerm-caf-enterprise-scale-poc
+      paths:
+        - tests/tfe-pipeline**
+  
+  ###############
+  # Set the Job #
+  ###############
+  jobs:
+    build:
+      environment: PoC
+      name: build-and-deploy-to-dev
+      runs-on: ubuntu-latest
+  
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+  
+        - name: Echo the var
+          env:
+            TF_API_TOKEN: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
+            TEST_VAR: ${{ vars.TEST_VAR }}
+          run: |
+            echo "Echoing var: ${TEST_VAR}"
+  
+        - name: Setup Terraform
+          uses: hashicorp/setup-terraform@v3
+          env:
+            TF_API_TOKEN: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
+          with:
+            cli_config_credentials_token: ${TF_API_TOKEN}
+  
+        - name: Set Terraform verbosity
+          run: echo "TF_LOG=DEBUG" >> $GITHUB_ENV
+  
+        - name: Terraform fmt
+          id: fmt
+          run: terraform fmt -recursive tests/tfe-pipeline
+          continue-on-error: true
+  
+        - name: Terraform Init
+          id: init
+          run: terraform init
+          working-directory: tests/tfe-pipeline
+  
+        - name: Terraform Plan
+          id: plan
+          if: github.event_name == 'push'
+          run: terraform plan -no-color
+          continue-on-error: true
+          working-directory: tests/tfe-pipeline
+  
+        - name: Terraform Plan Status
+          if: steps.plan.outcome == 'failure'
+          run: exit 1
+  
+        - name: Terraform Apply
+          run: terraform apply -auto-approve
+          working-directory: tests/tfe-pipeline
